@@ -1,0 +1,785 @@
+if game.PlaceId == 8260276694 then
+local Library = loadstring(game:HttpGet("https://raw.githubuserContent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+local Window = Library.CreateLib("Enjoy By Owenn#1382", "Ocean")
+
+
+                 local Main = Window:NewTab("Main")
+     local MainSection = Main:NewSection("Main")
+     
+     MainSection:NewToggle("Kill aura", "ToggleInfo", function(state)
+    if state then
+   _G.test23 = true 
+spawn(function()
+    while _G.test23 == true do
+for i,v in pairs(game:GetService('Players'):GetPlayers()) do
+  if v.Character and v ~= game.Players.LocalPlayer then
+    humanoid = v.Character.Humanoid
+local args = {
+    [1] = humanoid,
+    [2] = 0,
+    [3] = 2.117086887359619,
+    [4] = Vector3.new(19.72730255126953, 18.738971710205078, 79.70987701416016)
+}
+
+game:GetService("Players").LocalPlayer.Character.HitEvent:FireServer(unpack(args))
+
+
+  end
+end
+wait(0.1)
+end
+end)
+else
+       _G.test23 = false 
+spawn(function()
+    while _G.test23 == true do
+for i,v in pairs(game:GetService('Players'):GetPlayers()) do
+  if v.Character and v ~= game.Players.LocalPlayer then
+    humanoid = v.Character.Humanoid
+local args = {
+    [1] = humanoid,
+    [2] = 0,
+    [3] = 2.117086887359619,
+    [4] = Vector3.new(19.72730255126953, 18.738971710205078, 79.70987701416016)
+}
+
+game:GetService("Players").LocalPlayer.Character.HitEvent:FireServer(unpack(args))
+
+
+  end
+end
+wait(0.1)
+end
+end)
+end
+end)
+
+MainSection:NewSlider("Hitbox", "SliderInfo", 20, 0, function(s) -- 500 (MaxValue) | 0 (MinValue)
+
+_G.HeadSize = s
+_G.Disabled = true
+ 
+game:GetService('RunService').RenderStepped:connect(function()
+if _G.Disabled then
+for i,v in next, game:GetService('Players'):GetPlayers() do
+if v.Name ~= game:GetService('Players').LocalPlayer.Name then
+pcall(function()
+v.Character.HumanoidRootPart.Size = Vector3.new(_G.HeadSize,_G.HeadSize,_G.HeadSize)
+v.Character.HumanoidRootPart.Transparency = 0.7
+v.Character.HumanoidRootPart.BrickColor = BrickColor.new("Really black")
+v.Character.HumanoidRootPart.Material = "Neon"
+v.Character.HumanoidRootPart.CanCollide = false
+end)
+end
+end
+end
+end)
+end)
+
+
+                 local Badges = Window:NewTab("Badges")
+     local BadgesSection = Badges:NewSection("Badges")
+     
+              BadgesSection:NewButton("Cake badge", "e", function()
+game.workspace.Groceries.Cake.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+end)
+
+              BadgesSection:NewButton("Backrooms badge", "e", function()
+game.workspace.Main["Backrooms Teleport"].CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+end)
+
+              BadgesSection:NewButton("Mushrooms badge", "e", function()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace")["Big Mushroom"].Union.CFrame
+end)
+
+                 local Events = Window:NewTab("Events")
+     local EventsSection = Events:NewSection("Events")
+     
+                   EventsSection:NewButton("Win spleef", "e", function()
+                       _G.spleef2 = true
+                       spawn(function()
+                           while _G.spleef2 == true do
+local args = {
+    [1] = workspace:FindFirstChild("Spleef Arena").Snow.Part
+}
+
+game:GetService("ReplicatedStorage").SnowEvent:FireServer(unpack(args))
+task.wait()
+end
+end)
+end)
+
+                   EventsSection:NewButton("Win Punch Arena", "e", function()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Arena.Seat.CFrame
+end)
+
+                 local Player = Window:NewTab("Player")
+     local PlayerSection = Player:NewSection("Player")
+          PlayerSection:NewButton("Reset", "e", function()
+game:GetService("ReplicatedStorage").Respawn:FireServer()
+
+end)
+     
+
+     
+     PlayerSection:NewButton("Fly", "SliderInfo", function() 
+     local Settings = {
+	
+	Speed = 5,
+	SprintSpeed = 30,
+	ToggleKey = Enum.KeyCode.LeftAlt,
+	SprintKey = Enum.KeyCode.LeftControl,
+	
+	ForwardKey = Enum.KeyCode.W,
+	LeftKey = Enum.KeyCode.A,
+	BackwardKey = Enum.KeyCode.S,
+	RightKey = Enum.KeyCode.D,
+	UpKey = Enum.KeyCode.E,
+	DownKey = Enum.KeyCode.Q,
+	
+}
+
+local Screen = Instance.new("ScreenGui",game.CoreGui)
+local Distance = Instance.new("TextLabel",Screen)
+Distance.BackgroundTransparency = 1
+Distance.Size = UDim2.new(0,10,0,10)
+Distance.ZIndex = 2
+Distance.Text = "0"
+Distance.TextStrokeTransparency = .5
+Distance.TextSize = 20
+Distance.TextStrokeColor3 = Color3.fromRGB(33, 33, 33)
+Distance.Font = Enum.Font.Gotham
+Distance.TextColor3 = Color3.new(1,1,1)
+Distance.TextXAlignment = Enum.TextXAlignment.Left
+Distance.TextYAlignment = Enum.TextYAlignment.Top
+
+
+local Mouse = game.Players.LocalPlayer:GetMouse()
+local Direction = Vector3.new(0,0,0)
+local InterpolatedDir = Direction
+local Tilt = 0
+local InterpolatedTilt = Tilt
+local RunService = game:GetService("RunService")
+local Toggled = false
+local Sprinting = false
+local CameraPos = game.Workspace.CurrentCamera.CFrame.Position
+
+pcall(function()
+	game.Players.LocalPlayer.DevCameraOcclusionMode = Enum.DevCameraOcclusionMode.Invisicam	
+end)
+
+function Lerp(a, b, t)
+    return a + (b - a) * t
+end
+
+local LastPos = nil
+
+function KeyHandler(actionName, userInputState)
+	if true and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+		if actionName == "Toggle" and userInputState == Enum.UserInputState.Begin then
+			Toggled = not Toggled
+			if Toggled then
+				LastPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+				--game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+				game.Players.LocalPlayer.Character.Humanoid.PlatformStand = true 
+			else
+				LastPos = nil
+				game.Players.LocalPlayer.Character.Humanoid.PlatformStand = false
+				--game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+			end
+		elseif actionName == "Forward" then
+			Tilt = userInputState == Enum.UserInputState.Begin and -20 or 0
+			Direction = Vector3.new(Direction.x,Direction.y,userInputState == Enum.UserInputState.Begin and -1 or 0)
+		elseif actionName == "Left" then
+			Direction = Vector3.new(userInputState == Enum.UserInputState.Begin and -1 or 0,Direction.y,Direction.z)
+		elseif actionName == "Backward" then
+			Tilt = userInputState == Enum.UserInputState.Begin and 20 or 0
+			Direction = Vector3.new(Direction.x,Direction.y,userInputState == Enum.UserInputState.Begin and 1 or 0)
+		elseif actionName == "Right" then
+			Direction = Vector3.new(userInputState == Enum.UserInputState.Begin and 1 or 0,Direction.y,Direction.z)
+		elseif actionName == "Up" then
+			Direction = Vector3.new(Direction.x,userInputState == Enum.UserInputState.Begin and 1 or 0,Direction.z)
+		elseif actionName == "Down" then
+			Direction = Vector3.new(Direction.x,userInputState == Enum.UserInputState.Begin and -1 or 0,Direction.z)
+		elseif actionName == "Sprint" then
+			Sprinting = userInputState == Enum.UserInputState.Begin
+		end
+	end
+end
+
+
+
+game:GetService("UserInputService").InputBegan:connect(function(inputObject, gameProcessedEvent)
+	
+	if inputObject.KeyCode == Settings.ToggleKey then
+		KeyHandler("Toggle", Enum.UserInputState.Begin, inputObject)
+	elseif inputObject.KeyCode == Settings.ForwardKey then
+		KeyHandler("Forward", Enum.UserInputState.Begin, inputObject)
+	elseif inputObject.KeyCode == Settings.LeftKey then
+		KeyHandler("Left", Enum.UserInputState.Begin, inputObject)
+	elseif inputObject.KeyCode == Settings.BackwardKey then
+		KeyHandler("Backward", Enum.UserInputState.Begin, inputObject)
+	elseif inputObject.KeyCode == Settings.RightKey then
+		KeyHandler("Right", Enum.UserInputState.Begin, inputObject)
+	elseif inputObject.KeyCode == Settings.UpKey then	
+		KeyHandler("Up", Enum.UserInputState.Begin, inputObject)
+	elseif inputObject.KeyCode == Settings.DownKey then
+		KeyHandler("Down", Enum.UserInputState.Begin, inputObject)
+	elseif inputObject.KeyCode == Settings.SprintKey then
+		KeyHandler("Sprint", Enum.UserInputState.Begin, inputObject)
+	end
+	
+	
+end)
+
+
+game:GetService("UserInputService").InputEnded:connect(function(inputObject, gameProcessedEvent)
+	
+	if inputObject.KeyCode == Settings.ToggleKey then
+		KeyHandler("Toggle", Enum.UserInputState.End, inputObject)
+	elseif inputObject.KeyCode == Settings.ForwardKey then
+		KeyHandler("Forward", Enum.UserInputState.End, inputObject)
+	elseif inputObject.KeyCode == Settings.LeftKey then
+		KeyHandler("Left", Enum.UserInputState.End, inputObject)
+	elseif inputObject.KeyCode == Settings.BackwardKey then
+		KeyHandler("Backward", Enum.UserInputState.End, inputObject)
+	elseif inputObject.KeyCode == Settings.RightKey then
+		KeyHandler("Right", Enum.UserInputState.End, inputObject)
+	elseif inputObject.KeyCode == Settings.UpKey then	
+		KeyHandler("Up", Enum.UserInputState.End, inputObject)
+	elseif inputObject.KeyCode == Settings.DownKey then
+		KeyHandler("Down", Enum.UserInputState.End, inputObject)
+	elseif inputObject.KeyCode == Settings.SprintKey then
+		KeyHandler("Sprint", Enum.UserInputState.End, inputObject)
+	end
+	
+	
+end)
+
+
+RunService.RenderStepped:Connect(function()
+	if Toggled and game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")  then
+		for i,v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+			if v:IsA("BasePart") then
+				v.Velocity = Vector3.new(0,0,0)
+			end
+		end
+		local RootPart = game.Players.LocalPlayer.Character.HumanoidRootPart
+		if LastPos then
+			Distance.Text = math.floor((LastPos-RootPart.Position).Magnitude+.5)
+			if (LastPos-RootPart.Position).Magnitude >= 350 then
+				Distance.TextColor3 = Color3.new(1,0,0)
+			else
+				Distance.TextColor3 = Color3.new(1,1,1)	
+			end
+		else
+			Distance.TextColor3 = Color3.new(1,1,1)
+			Distance.Text = 0
+		end
+		InterpolatedDir = InterpolatedDir:Lerp((Direction * (Sprinting and Settings.SprintSpeed or Settings.Speed)),.2)
+		InterpolatedTilt = Lerp(InterpolatedTilt ,Tilt* (Sprinting and 2 or 1),Tilt == 0 and .2 or .1)
+		RootPart.CFrame = RootPart.CFrame:Lerp(CFrame.new(RootPart.Position,RootPart.Position + Mouse.UnitRay.Direction) * CFrame.Angles(0,math.rad(00),0) * CFrame.new(InterpolatedDir)  * CFrame.Angles(math.rad(InterpolatedTilt),0,0),.2)
+	else
+		Distance.TextColor3 = Color3.new(1,1,1)
+		Distance.Text = 0
+	end	
+end)
+ end)
+
+     PlayerSection:NewSlider("Walkspeed", "e", 500, 0, function(walkspeed)
+  game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = walkspeed
+end)
+PlayerSection:NewSlider("JumpPower", "SliderInfo", 500, 0, function(jumppower)
+  game.Players.LocalPlayer.Character.Humanoid.JumpPower = jumppower
+end)
+
+
+                 local Misc = Window:NewTab("Misc")
+     local MiscSection = Misc:NewSection("Misc")
+
+
+
+       MiscSection:NewButton("rejoin", "rejoin ", function()
+local ts = game:GetService("TeleportService")
+
+local p = game:GetService("Players").LocalPlayer
+
+ 
+
+ts:Teleport(game.PlaceId, p)
+end)
+
+       MiscSection:NewButton("Anti Lag", "Only use if needed can break sometimes", function()
+           
+local cam=workspace.CurrentCamera
+local screen_size=Vector2.new(0,0)
+local maxdist=500 
+local update=10 
+local oldt=tick()
+local gui=game.StarterGui.ScreenGui
+screen_size=Vector2.new(gui.AbsoluteSize.x,gui.AbsoluteSize.y)
+
+local function pixel2stud(pix)
+return pix * 2.54 / 96
+end
+
+local objects,trans={},{}
+function Get(par,class)
+local cl=class;
+local chs=par:GetChildren()
+for i=1,#chs do
+if chs[i]:IsA(class) and not chs[i].Parent:findFirstChild"Humanoid" then
+table.insert(objects,chs[i])
+table.insert(trans,chs[i].Transparency)
+end
+Get(chs[i],cl)
+end
+return objects;
+end
+gt=Get(workspace,"BasePart")
+
+gui.Changed:connect(function(w)
+if w=="AbsoluteSize" then
+screen_size=Vector2.new(gui.AbsoluteSize.x,gui.AbsoluteSize.y)
+end
+end)
+
+while true do
+local mid=cam.CoordinateFrame*CFrame.new(0,0,-maxdist)
+if tick()>oldt+update then
+oldt=tick()
+objects={}
+gt=Get(workspace,"BasePart")
+end
+for i=1,#gt do
+if (gt[i].Position-mid.p).magnitude<=maxdist then
+gt[i].Transparency=trans[i]
+else
+gt[i].Transparency=1
+end
+end
+wait()
+end 
+end)
+
+--Anti Afk
+
+MiscSection:NewButton("Anti-Afk", "Makes you not lose connection", function()
+local vu = game:GetService("VirtualUser")
+game:GetService("Players").LocalPlayer.Idled:connect(function()
+   vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+   wait(1)
+   vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+end)
+end)
+
+MiscSection:NewButton("esp", "shows everyone", function()
+    
+    
+--Settings--
+local ESP = {
+    Enabled = true,
+    Boxes = true,
+    BoxShift = CFrame.new(0,-1.5,0),
+	BoxSize = Vector3.new(4,6,0),
+    Color = Color3.fromRGB(255, 170, 0),
+    FaceCamera = false,
+    Names = true,
+    TeamColor = true,
+    Thickness = 2,
+    AttachShift = 1,
+    TeamMates = true,
+    Players = true,
+    
+    Objects = setmetatable({}, {__mode="kv"}),
+    Overrides = {}
+}
+
+--Declarations--
+local cam = workspace.CurrentCamera
+local plrs = game:GetService("Players")
+local plr = plrs.LocalPlayer
+local mouse = plr:GetMouse()
+
+local V3new = Vector3.new
+local WorldToViewportPoint = cam.WorldToViewportPoint
+
+--Functions--
+local function Draw(obj, props)
+	local new = Drawing.new(obj)
+	
+	props = props or {}
+	for i,v in pairs(props) do
+		new[i] = v
+	end
+	return new
+end
+
+function ESP:GetTeam(p)
+	local ov = self.Overrides.GetTeam
+	if ov then
+		return ov(p)
+	end
+	
+	return p and p.Team
+end
+
+function ESP:IsTeamMate(p)
+    local ov = self.Overrides.IsTeamMate
+	if ov then
+		return ov(p)
+    end
+    
+    return self:GetTeam(p) == self:GetTeam(plr)
+end
+
+function ESP:GetColor(obj)
+	local ov = self.Overrides.GetColor
+	if ov then
+		return ov(obj)
+    end
+    local p = self:GetPlrFromChar(obj)
+	return p and self.TeamColor and p.Team and p.Team.TeamColor.Color or self.Color
+end
+
+function ESP:GetPlrFromChar(char)
+	local ov = self.Overrides.GetPlrFromChar
+	if ov then
+		return ov(char)
+	end
+	
+	return plrs:GetPlayerFromCharacter(char)
+end
+
+function ESP:Toggle(bool)
+    self.Enabled = bool
+    if not bool then
+        for i,v in pairs(self.Objects) do
+            if v.Type == "Box" then --fov circle etc
+                if v.Temporary then
+                    v:Remove()
+                else
+                    for i,v in pairs(v.Components) do
+                        v.Visible = false
+                    end
+                end
+            end
+        end
+    end
+end
+
+function ESP:GetBox(obj)
+    return self.Objects[obj]
+end
+
+function ESP:AddObjectListener(parent, options)
+    local function NewListener(c)
+        if type(options.Type) == "string" and c:IsA(options.Type) or options.Type == nil then
+            if type(options.Name) == "string" and c.Name == options.Name or options.Name == nil then
+                if not options.Validator or options.Validator(c) then
+                    local box = ESP:Add(c, {
+                        PrimaryPart = type(options.PrimaryPart) == "string" and c:WaitForChild(options.PrimaryPart) or type(options.PrimaryPart) == "function" and options.PrimaryPart(c),
+                        Color = type(options.Color) == "function" and options.Color(c) or options.Color,
+                        ColorDynamic = options.ColorDynamic,
+                        Name = type(options.CustomName) == "function" and options.CustomName(c) or options.CustomName,
+                        IsEnabled = options.IsEnabled,
+                        RenderInNil = options.RenderInNil
+                    })
+                    --TODO: add a better way of passing options
+                    if options.OnAdded then
+                        coroutine.wrap(options.OnAdded)(box)
+                    end
+                end
+            end
+        end
+    end
+
+    if options.Recursive then
+        parent.DescendantAdded:Connect(NewListener)
+        for i,v in pairs(parent:GetDescendants()) do
+            coroutine.wrap(NewListener)(v)
+        end
+    else
+        parent.ChildAdded:Connect(NewListener)
+        for i,v in pairs(parent:GetChildren()) do
+            coroutine.wrap(NewListener)(v)
+        end
+    end
+end
+
+local boxBase = {}
+boxBase.__index = boxBase
+
+function boxBase:Remove()
+    ESP.Objects[self.Object] = nil
+    for i,v in pairs(self.Components) do
+        v.Visible = false
+        v:Remove()
+        self.Components[i] = nil
+    end
+end
+
+function boxBase:Update()
+    if not self.PrimaryPart then
+        --warn("not supposed to print", self.Object)
+        return self:Remove()
+    end
+
+    local color
+    if ESP.Highlighted == self.Object then
+       color = ESP.HighlightColor
+    else
+        color = self.Color or self.ColorDynamic and self:ColorDynamic() or ESP:GetColor(self.Object) or ESP.Color
+    end
+
+    local allow = true
+    if ESP.Overrides.UpdateAllow and not ESP.Overrides.UpdateAllow(self) then
+        allow = false
+    end
+    if self.Player and not ESP.TeamMates and ESP:IsTeamMate(self.Player) then
+        allow = false
+    end
+    if self.Player and not ESP.Players then
+        allow = false
+    end
+    if self.IsEnabled and (type(self.IsEnabled) == "string" and not ESP[self.IsEnabled] or type(self.IsEnabled) == "function" and not self:IsEnabled()) then
+        allow = false
+    end
+    if not workspace:IsAncestorOf(self.PrimaryPart) and not self.RenderInNil then
+        allow = false
+    end
+
+    if not allow then
+        for i,v in pairs(self.Components) do
+            v.Visible = false
+        end
+        return
+    end
+
+    if ESP.Highlighted == self.Object then
+        color = ESP.HighlightColor
+    end
+
+    --calculations--
+    local cf = self.PrimaryPart.CFrame
+    if ESP.FaceCamera then
+        cf = CFrame.new(cf.p, cam.CFrame.p)
+    end
+    local size = self.Size
+    local locs = {
+        TopLeft = cf * ESP.BoxShift * CFrame.new(size.X/2,size.Y/2,0),
+        TopRight = cf * ESP.BoxShift * CFrame.new(-size.X/2,size.Y/2,0),
+        BottomLeft = cf * ESP.BoxShift * CFrame.new(size.X/2,-size.Y/2,0),
+        BottomRight = cf * ESP.BoxShift * CFrame.new(-size.X/2,-size.Y/2,0),
+        TagPos = cf * ESP.BoxShift * CFrame.new(0,size.Y/2,0),
+        Torso = cf * ESP.BoxShift
+    }
+
+    if ESP.Boxes then
+        local TopLeft, Vis1 = WorldToViewportPoint(cam, locs.TopLeft.p)
+        local TopRight, Vis2 = WorldToViewportPoint(cam, locs.TopRight.p)
+        local BottomLeft, Vis3 = WorldToViewportPoint(cam, locs.BottomLeft.p)
+        local BottomRight, Vis4 = WorldToViewportPoint(cam, locs.BottomRight.p)
+
+        if self.Components.Quad then
+            if Vis1 or Vis2 or Vis3 or Vis4 then
+                self.Components.Quad.Visible = true
+                self.Components.Quad.PointA = Vector2.new(TopRight.X, TopRight.Y)
+                self.Components.Quad.PointB = Vector2.new(TopLeft.X, TopLeft.Y)
+                self.Components.Quad.PointC = Vector2.new(BottomLeft.X, BottomLeft.Y)
+                self.Components.Quad.PointD = Vector2.new(BottomRight.X, BottomRight.Y)
+                self.Components.Quad.Color = color
+            else
+                self.Components.Quad.Visible = false
+            end
+        end
+    else
+        self.Components.Quad.Visible = false
+    end
+
+    if ESP.Names then
+        local TagPos, Vis5 = WorldToViewportPoint(cam, locs.TagPos.p)
+        
+        if Vis5 then
+            self.Components.Name.Visible = true
+            self.Components.Name.Position = Vector2.new(TagPos.X, TagPos.Y)
+            self.Components.Name.Text = self.Name
+            self.Components.Name.Color = color
+            
+            self.Components.Distance.Visible = true
+            self.Components.Distance.Position = Vector2.new(TagPos.X, TagPos.Y + 14)
+            self.Components.Distance.Text = math.floor((cam.CFrame.p - cf.p).magnitude) .."m away"
+            self.Components.Distance.Color = color
+        else
+            self.Components.Name.Visible = false
+            self.Components.Distance.Visible = false
+        end
+    else
+        self.Components.Name.Visible = false
+        self.Components.Distance.Visible = false
+    end
+    
+    if ESP.Tracers then
+        local TorsoPos, Vis6 = WorldToViewportPoint(cam, locs.Torso.p)
+
+        if Vis6 then
+            self.Components.Tracer.Visible = true
+            self.Components.Tracer.From = Vector2.new(TorsoPos.X, TorsoPos.Y)
+            self.Components.Tracer.To = Vector2.new(cam.ViewportSize.X/2,cam.ViewportSize.Y/ESP.AttachShift)
+            self.Components.Tracer.Color = color
+        else
+            self.Components.Tracer.Visible = false
+        end
+    else
+        self.Components.Tracer.Visible = false
+    end
+end
+
+function ESP:Add(obj, options)
+    if not obj.Parent and not options.RenderInNil then
+        return warn(obj, "has no parent")
+    end
+
+    local box = setmetatable({
+        Name = options.Name or obj.Name,
+        Type = "Box",
+        Color = options.Color --[[or self:GetColor(obj)]],
+        Size = options.Size or self.BoxSize,
+        Object = obj,
+        Player = options.Player or plrs:GetPlayerFromCharacter(obj),
+        PrimaryPart = options.PrimaryPart or obj.ClassName == "Model" and (obj.PrimaryPart or obj:FindFirstChild("HumanoidRootPart") or obj:FindFirstChildWhichIsA("BasePart")) or obj:IsA("BasePart") and obj,
+        Components = {},
+        IsEnabled = options.IsEnabled,
+        Temporary = options.Temporary,
+        ColorDynamic = options.ColorDynamic,
+        RenderInNil = options.RenderInNil
+    }, boxBase)
+
+    if self:GetBox(obj) then
+        self:GetBox(obj):Remove()
+    end
+
+    box.Components["Quad"] = Draw("Quad", {
+        Thickness = self.Thickness,
+        Color = color,
+        Transparency = 1,
+        Filled = false,
+        Visible = self.Enabled and self.Boxes
+    })
+    box.Components["Name"] = Draw("Text", {
+		Text = box.Name,
+		Color = box.Color,
+		Center = true,
+		Outline = true,
+        Size = 19,
+        Visible = self.Enabled and self.Names
+	})
+	box.Components["Distance"] = Draw("Text", {
+		Color = box.Color,
+		Center = true,
+		Outline = true,
+        Size = 19,
+        Visible = self.Enabled and self.Names
+	})
+	
+	box.Components["Tracer"] = Draw("Line", {
+		Thickness = ESP.Thickness,
+		Color = box.Color,
+        Transparency = 1,
+        Visible = self.Enabled and self.Tracers
+    })
+    self.Objects[obj] = box
+    
+    obj.AncestryChanged:Connect(function(_, parent)
+        if parent == nil and ESP.AutoRemove ~= false then
+            box:Remove()
+        end
+    end)
+    obj:GetPropertyChangedSignal("Parent"):Connect(function()
+        if obj.Parent == nil and ESP.AutoRemove ~= false then
+            box:Remove()
+        end
+    end)
+
+    local hum = obj:FindFirstChildOfClass("Humanoid")
+	if hum then
+        hum.Died:Connect(function()
+            if ESP.AutoRemove ~= false then
+                box:Remove()
+            end
+		end)
+    end
+
+    return box
+end
+
+local function CharAdded(char)
+    local p = plrs:GetPlayerFromCharacter(char)
+    if not char:FindFirstChild("HumanoidRootPart") then
+        local ev
+        ev = char.ChildAdded:Connect(function(c)
+            if c.Name == "HumanoidRootPart" then
+                ev:Disconnect()
+                ESP:Add(char, {
+                    Name = p.Name,
+                    Player = p,
+                    PrimaryPart = c
+                })
+            end
+        end)
+    else
+        ESP:Add(char, {
+            Name = p.Name,
+            Player = p,
+            PrimaryPart = char.HumanoidRootPart
+        })
+    end
+end
+local function PlayerAdded(p)
+    p.CharacterAdded:Connect(CharAdded)
+    if p.Character then
+        coroutine.wrap(CharAdded)(p.Character)
+    end
+end
+plrs.PlayerAdded:Connect(PlayerAdded)
+for i,v in pairs(plrs:GetPlayers()) do
+    if v ~= plr then
+        PlayerAdded(v)
+    end
+end
+
+game:GetService("RunService").RenderStepped:Connect(function()
+    cam = workspace.CurrentCamera
+    for i,v in (ESP.Enabled and pairs or ipairs)(ESP.Objects) do
+        if v.Update then
+            local s,e = pcall(v.Update, v)
+            if not s then warn("[EU]", e, v.Object:GetFullName()) end
+        end
+    end
+end)
+
+return ESP
+end)
+
+       --Settings--
+
+                   local Settings = Window:NewTab("Settings")
+       
+       local SettingsSection = Settings:NewSection("Settings")
+       
+
+SettingsSection:NewKeybind("ToggleGui", "?", Enum.KeyCode.RightControl, function()
+	Library:ToggleUI()
+end)
+
+                 local Credits = Window:NewTab("Credits")
+     local CreditsSection = Credits:NewSection("Credits")
+CreditsSection:NewButton("Creator Owenn#1382", "Discord", function()
+  print("e")
+end)
+CreditsSection:NewButton("Libary = KavoLibary", "https://xheptcofficial.gitbook.io/kavo-library/", function()
+  print("https://xheptcofficial.gitbook.io/kavo-library/")
+end)
+
+
+end     
