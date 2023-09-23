@@ -412,7 +412,7 @@ function Library:create(options)
 		Name = "EXOM4N",
 		Size = UDim2.fromOffset(600, 400),
 		Theme = self.Themes[settings.Theme],
-		Link = "https://github.com/deeeity/mercury-lib"
+		Link = "https://raw.githubusercontent.com/9ur98wh8fjkerbngo12ikontgg/fortnite/main/UILIB"
 	}, options)
 
 	if getgenv and getgenv().MercuryUI then
