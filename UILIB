@@ -882,7 +882,7 @@ function Library:create(options)
 		Name = "UI Drag Speed",
 		Description = "How smooth the dragging looks.",
 		Max = 20,
-		Default = 14,
+		Default = 20,
 		Callback = function(value)
 			Library.DragSpeed = (20 - value)/100
 		end,
@@ -896,9 +896,8 @@ function Library:create(options)
 
 	rawset(mt, "creditsContainer", creditsTab.container)
 
-	creditsTab:credit{Name = "Abstract", Description = "UI Library Developer", Discord = "Abstract#8007", V3rmillion = "AbstractPoo"}
-	creditsTab:credit{Name = "Deity", Description = "UI Library Developer", Discord = "Deity#0228", V3rmillion = "0xDEITY"}
-	creditsTab:credit{Name = "Repository", Description = "UI Library Repository", Github="https://github.com/deeeity/mercury-lib/blob/master/src.lua"}
+	creditsTab:credit{Name = "Owenn", Description = "Scripter", Discord = "Owenn#1382"}
+	creditsTab:credit{Name = "Babaji", Description = "Scripter", Discord = "Babaji_."}
 
 	return mt
 end
